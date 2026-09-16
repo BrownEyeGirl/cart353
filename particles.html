@@ -8,7 +8,7 @@
         canvas {
             display: block;
             border-radius: 28px; 
-            background: pink;
+            background: rgb(41, 0, 104);
             width: min(96vw, 96 vh); 
             height: min(96vw, 96vh);
             max-width: 800px;
@@ -86,7 +86,8 @@
                 context.clearRect(0,0,canvas.width, canvas.height) 
 
                 for (const p of particles) { // turn js vars into css values for color 
-                    const color = 'hsla($50, $100%, 75%, 0.8)'; 
+                    const color = `hsla(${p.hue}, ${p.sat}%, 75%, 0.8)`; 
+                    console.log(p.hue)
 
                     context.beginPath(); // draw particles 
                     context.arc(p.x, p.y, p.radius, 0, Math.PI*2); // draw it as a circle. math.2pi makes it a full circle 
