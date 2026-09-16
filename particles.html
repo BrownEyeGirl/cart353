@@ -8,13 +8,12 @@
         canvas {
             display: block;
             border-radius: 28px; 
-            background: black;
+            background: pink;
             width: min(96vw, 96 vh); 
             height: min(96vw, 96vh);
             max-width: 800px;
             max-height: 800px; 
             cursor: crosshair; 
-
         }
     </style>
 </head>
@@ -28,22 +27,27 @@
 
             const GRAVITY = 0.18; // define const for gravity 
 
+
+            const rand = (max, min) => Math.random() * (max-min) + min; 
+
             let particles = [];
 
+            console.log(particles)
+
             function spawnParticle() {
-                const x = canvas.width / 2 + rand(-45, 45)
-                const y = rand(60,90)
+                const x = canvas.width / 2 + rand(-45, 45); 
+                const y = rand(60,90); 
 
-                const radius = rand(2.5, 7.5)
+                const radius = rand(2.5, 7.5); 
 
-                const vx = rand(-1.2, 1.2)// rand velocity x
-                const vy = rand(-2.5, 0.2) // rand velocity y
+                const vx = rand(-1.2, 1.2);// rand velocity x
+                const vy = rand(-2.5, 0.2); // rand velocity y
 
-                const hue = rand(28,48)
+                const hue = rand(28,48);
                 const sat = rand(80,100);
                 const light = rand(55,75); 
 
-                const lifetime = rand(70,180)
+                const lifetime = rand(70,180); 
 
                 particles.push({
                     x,y,
@@ -53,12 +57,14 @@
                     sat,
                     light,
                     life: lifetime,
-                    maxLife: lifeetime, 
+                    maxLife: lifetime, 
                 })
+
             }
 
+
             function updateParticles() {
-                for(let i = particles.length -1; i >=0; i--) {
+                for(let i = (particles.length-1); i >=0; i--) {
                     const p = particles[i] // get particle for each entry in array 
                     p.vy += GRAVITY // apply gravity to y velocity of P 
 
@@ -80,23 +86,33 @@
                 context.clearRect(0,0,canvas.width, canvas.height) 
 
                 for (const p of particles) { // turn js vars into css values for color 
-                    const color = 'hsla(${p.hue}, ${p.sat}. ${p.light}%, 0.8)'; 
+                    const color = 'hsla($50, $100%, 75%, 0.8)'; 
 
                     context.beginPath(); // draw particles 
                     context.arc(p.x, p.y, p.radius, 0, Math.PI*2); // draw it as a circle. math.2pi makes it a full circle 
+                    context.fillStyle = color; 
+                    context.fill(); 
                 } 
             }
 
             function loop() {
                 for (let s = 0; s < 8; s++) { // spawn some functions every frame
-                    if(particle.length < 2000){ // make sure not to spawn infinate particles 
+                    if(particles.length < 2000){ // make sure not to spawn infinate particles 
                         spawnParticle(); 
                     }
                     else {
                         break; 
                     }
                 }
+                updateParticles(); 
+
+            draw(); 
+
+            requestAnimationFrame(loop);
             }
-        })
+
+            loop()
+             
+        })(); // tells it to run the function we defined 
     </script>
 </html>
