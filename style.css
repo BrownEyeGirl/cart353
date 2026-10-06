@@ -1,13 +1,14 @@
 
 #main { 
   margin: 0;
-  padding: 0;
+  padding: 30px;
   width: 100%;
   height: 100%;
   text-align:center;
   display:grid; 
   justify-content: center;
   align-items: center;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 h1 {
@@ -16,4 +17,22 @@ h1 {
 
 h2 {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+p {
+    font-size: 0.8rem; 
+}
+
+/* Checkbox Columns */
+.container {
+  display: flex;
+  gap: 20px; /* Optional: Adds spacing between the columns */
+  padding: 30px;
+}
+
+/* Each column takes up an equal amount of space */
+.column {
+  flex: 1; 
+  padding: 15px;
+  background-color: #f0f0f0; /* Optional: Added to see the boxes clearly */
 }

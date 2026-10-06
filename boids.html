@@ -15,6 +15,41 @@
     <div id="main">
         <h1>BOIDS</h1>
         <h2>presentation by: skyla trousdale</h2>
+
+        <!-- Intro -->
+        <div>
+
+        </div>
+
+        <!-- Checkboxes -->
+         <div class="container">
+            <div class="column">
+                <label>
+                <input type="checkbox" id="alignment">
+                Alignment
+                </label>
+                <p>boids roughly match the velocity of their neighbors</p>
+            </div>
+
+            <div class="column">
+                <label>
+                <input type="checkbox" id="cohesion">
+                Cohesion
+                </label>
+                <p>boids move towards the center of mass of their neighbors</p>
+            </div>
+            <div class="column">
+                <label>
+                <input type="checkbox" id="separation">
+                Separation
+                </label>
+                <p>boids move away from other boids if too close</p>
+            </div>
+        </div>
+
+        <div id="p5-canvas"></div>
+
+
     </div>
 
 
@@ -24,13 +59,15 @@
   const flock = [];
 
   function setup() {
-    let cnv = createCanvas(600, 400);
-    cnv.parent('main')
+    
+    let canvas = createCanvas(600, 400);
+    canvas.parent('p5-canvas')
     // Create an initial group of boids
     for (let i = 0; i < 100; i++) {
-        flock.push(new Boids(random(width), random(height)));
+        flock.push(new Boids(random(width), random(height))); // random location
     }
   }
+
 
   function draw() {
     background("lightblue");
@@ -70,6 +107,19 @@ class Boids {
     let alignment = this.align(boids);
     let cohesion = this.cohere(boids);
     let separation = this.separate(boids);
+
+    // Check which rules are turned on
+  if (!document.getElementById("alignment").checked) {
+    alignment.mult(0);
+  }
+
+  if (!document.getElementById("cohesion").checked) {
+    cohesion.mult(0);
+  }
+
+  if (!document.getElementById("separation").checked) {
+    separation.mult(0);
+  }
 
     // Weight the forces (adjust multipliers to change behavior)
     alignment.mult(1.0);
