@@ -1,0 +1,19 @@
+
+#main { 
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  text-align:center;
+  display:grid; 
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

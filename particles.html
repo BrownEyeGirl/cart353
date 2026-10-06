@@ -8,7 +8,7 @@
         canvas {
             display: block;
             border-radius: 28px; 
-            background: rgb(41, 0, 104);
+            background: rgb(40, 109, 156);
             width: min(96vw, 96 vh); 
             height: min(96vw, 96vh);
             max-width: 800px;
@@ -23,9 +23,8 @@
     <script>
         (function() {
             const canvas = document.getElementById('particleCanvas'); 
-            const context = canvas.getContext('2d'); 
-
-            const GRAVITY = 0.18; // define const for gravity 
+            const context = canvas.getContext('2d');
+            const GRAVITY = -0.02; // define const for gravity 
 
 
             const rand = (max, min) => Math.random() * (max-min) + min; 
@@ -34,34 +33,17 @@
 
             console.log(particles)
 
+
             function spawnParticle() {
-                const x = canvas.width / 2 + rand(-45, 45); 
-                const y = rand(60,90); 
-
-                const radius = rand(2.5, 7.5); 
-
-                const vx = rand(-1.2, 1.2);// rand velocity x
-                const vy = rand(-2.5, 0.2); // rand velocity y
-
-                const hue = rand(28,48);
-                const sat = rand(80,100);
-                const light = rand(55,75); 
-
-                const lifetime = rand(70,180); 
-
                 particles.push({
                     x,y,
                     vx,vy,
                     radius,
-                    hue,
-                    sat,
-                    light,
                     life: lifetime,
                     maxLife: lifetime, 
                 })
 
             }
-
 
             function updateParticles() {
                 for(let i = (particles.length-1); i >=0; i--) {
@@ -73,7 +55,6 @@
 
                     p.vx *= 0.998; // slow down velocity slightly proportional  
                     p.vy *= 0.998; 
-
                     p.life--; 
 
                     if(p.life <= 0)  { // destroy particle if no life or if it leaves the canvas
@@ -84,16 +65,6 @@
 
             function draw() {
                 context.clearRect(0,0,canvas.width, canvas.height) 
-
-                for (const p of particles) { // turn js vars into css values for color 
-                    const color = `hsla(${p.hue}, ${p.sat}%, 75%, 0.8)`; 
-                    console.log(p.hue)
-
-                    context.beginPath(); // draw particles 
-                    context.arc(p.x, p.y, p.radius, 0, Math.PI*2); // draw it as a circle. math.2pi makes it a full circle 
-                    context.fillStyle = color; 
-                    context.fill(); 
-                } 
             }
 
             function loop() {
@@ -106,10 +77,8 @@
                     }
                 }
                 updateParticles(); 
-
-            draw(); 
-
-            requestAnimationFrame(loop);
+                draw(); 
+                requestAnimationFrame(loop);
             }
 
             loop()
