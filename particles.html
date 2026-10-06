@@ -19,13 +19,12 @@
 </head>
 
 <body> 
-    <canvas id="particleCanvas"></canvas>
+    <canvas style="background-color: blue;" id="particleCanvas" width="800" height="800"></canvas>></canvas>
     <script>
         (function() {
             const canvas = document.getElementById('particleCanvas'); 
             const context = canvas.getContext('2d');
             const GRAVITY = -0.02; // define const for gravity 
-
 
             const rand = (max, min) => Math.random() * (max-min) + min; 
 
@@ -36,16 +35,22 @@
 
             function spawnParticle() {
                 particles.push({
-                    x,y,
-                    vx,vy,
-                    radius,
-                    life: lifetime,
-                    maxLife: lifetime, 
-                })
-
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: Math.random() * 2 - 1,
+                    vy: Math.random() * 2 - 1,
+                    radius: 3,
+                    life: 1000,
+                    maxLife: 1000
+                });
             }
 
             function updateParticles() {
+                /** BOIDS: each particle checks nearby particles and adjusts velocity using: 
+                 * Separation = avoid neighbors 
+                 * Alignment = match neighbor direction 
+                 * Cohesion = move toward neighbors
+                */
                 for(let i = (particles.length-1); i >=0; i--) {
                     const p = particles[i] // get particle for each entry in array 
                     p.vy += GRAVITY // apply gravity to y velocity of P 
@@ -62,10 +67,27 @@
                     }
                 }
             }
-
+            
+   
             function draw() {
                 context.clearRect(0,0,canvas.width, canvas.height) 
             }
+
+            function resetParticles() {
+                                    console.log("particles reset")
+
+                for (let p of particles) {
+                    p.x = Math.random() * canvas.width;
+                    p.y = Math.random() * canvas.height;
+
+                    p.vx = Math.random() * 2 - 1;
+                    p.vy = Math.random() * 2 - 1;
+                    console.log("particles reset")
+                }
+            }
+
+            canvas.addEventListener("click", resetParticles);
+
 
             function loop() {
                 for (let s = 0; s < 8; s++) { // spawn some functions every frame

@@ -20,11 +20,6 @@
 
 
 <script>
-  let x = 200;
-  let y = 200;
-
-  let xSpeed = 3;
-  let ySpeed = 2;
 
   const flock = [];
 
@@ -38,15 +33,15 @@
   }
 
   function draw() {
-    background(30);
+    background("lightblue");
 
     // Update and show each boid
-  for (let boid of flock) {
-    boid.edges();
-    boid.flock(flock);
-    boid.update();
-    boid.show();
-  }
+    for (let boid of flock) {
+        boid.edges();
+        boid.flock(flock);
+        boid.update();
+        boid.show();
+    }
 }
 
 
