@@ -17,15 +17,27 @@
         <h2>presentation by: skyla trousdale</h2>
 
         <!-- Intro -->
-        <div>
+        <div id="text">
+            <p style="text-align:left">
+                boids algorithm was developed in 
+            </p>
 
+            <p><i>We must define the behavior of a single bird so that when a lot of instances of the bird are simulated, they flock convincingly. 
+                The flock seems to be following a leader, but each time they turn, a new bird becomes the leader. The flock changes direction
+                 like a single unit, yet it is just an assembly of individuals. The flock is a dense cluster, but the birds do not often collide.</i> - Reynolds (link)</p>
+    
+            <iframe width="524" height="295" src="https://www.youtube.com/embed/V4f_1_r80RY?loop=1?autoplay=1?mute=1" 
+            title="Flight of the Starlings: Watch This Eerie but Beautiful Phenomenon | Short Film Showcase" 
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
 
         <!-- Checkboxes -->
+        <h2>BOIDS playground</h2>
          <div class="container">
             <div class="column">
                 <label>
-                <input type="checkbox" id="alignment">
+                <input type="checkbox" id="alignment" checked>
                 Alignment
                 </label>
                 <p>boids roughly match the velocity of their neighbors</p>
@@ -33,14 +45,14 @@
 
             <div class="column">
                 <label>
-                <input type="checkbox" id="cohesion">
+                <input type="checkbox" id="cohesion" checked>
                 Cohesion
                 </label>
                 <p>boids move towards the center of mass of their neighbors</p>
             </div>
             <div class="column">
                 <label>
-                <input type="checkbox" id="separation">
+                <input type="checkbox" id="separation" checked>
                 Separation
                 </label>
                 <p>boids move away from other boids if too close</p>
@@ -48,6 +60,13 @@
         </div>
 
         <div id="p5-canvas"></div>
+
+        <h2>RESOURCES </h2>
+        <p>resources i used to research and create this presentation</p>
+        <a href="https://natureofcode.com/autonomous-agents/">Nature of Code: Autonomous-Agents - By Craig Reynolds</a>
+        <a href="https://www.red3d.com/cwr/boids/">Boids (Background and Update) - By Craig Reynolds</a>
+        <a href="https://thecodingtrain.com/challenges/124-flocking-simulation">Flocking Simulation - By Coding Train</a>
+        <a href="https://www.youtube.com/watch?v=V4f_1_r80RY&t=3s">Flight of the Starlings - By National Geographic</a>
 
 
     </div>
@@ -63,7 +82,7 @@
     let canvas = createCanvas(600, 400);
     canvas.parent('p5-canvas')
     // Create an initial group of boids
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 500; i++) {
         flock.push(new Boids(random(width), random(height))); // random location
     }
   }
@@ -82,7 +101,6 @@
 }
 
 
-
 class Boids {
   constructor(x, y) {
     this.position = createVector(x, y);
@@ -90,17 +108,32 @@ class Boids {
     this.velocity.setMag(random(2, 4));
     this.acceleration = createVector();
     this.maxForce = 0.2;
-    this.maxSpeed = 4;
-    this.r = 6; // size of the boid
+    this.maxSpeed = 6;
+    this.r = 2; // size of the boid
   }
 
-  // Wrap around the edges of the screen
+  // avoid the edges of the screen
   edges() {
-    if (this.position.x > width) this.position.x = 0;
-    if (this.position.x < 0) this.position.x = width;
-    if (this.position.y > height) this.position.y = 0;
-    if (this.position.y < 0) this.position.y = height;
+
+  let margin = 40;
+  let turn = 0.5;
+
+  if (this.position.x < margin) {
+    this.velocity.x += turn;
   }
+
+  if (this.position.x > width - margin) {
+    this.velocity.x -= turn;
+  }
+
+  if (this.position.y < margin) {
+    this.velocity.y += turn;
+  }
+
+  if (this.position.y > height - margin) {
+    this.velocity.y -= turn;
+  }
+}
 
   // Apply forces for alignment, cohesion, and separation
   flock(boids) {
@@ -124,7 +157,7 @@ class Boids {
     // Weight the forces (adjust multipliers to change behavior)
     alignment.mult(1.0);
     cohesion.mult(1.0);
-    separation.mult(1.5);
+    separation.mult(1.8);
 
     this.acceleration.add(alignment);
     this.acceleration.add(cohesion);
@@ -140,8 +173,8 @@ class Boids {
 
   show() {
     // Draw boid as a small circle (or rotate a triangle toward velocity)
-    stroke(255);
-    fill(200, 100);
+    stroke(55);
+    fill(0, 0);
     ellipse(this.position.x, this.position.y, this.r * 2);
   }
 

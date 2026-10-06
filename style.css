@@ -1,26 +1,53 @@
 
+body {
+  padding: 0;
+  margin: 10vw;
+  display: grid; /* Set up the grid and justify/align to center */
+  justify-content: center;
+  align-content: center;
+  background-color: rgb(0, 0, 0);
+  background-image: linear-gradient(rgba(40, 12, 167, 0.2), rgba(0, 0, 0, 0.8)), url('backdrop.jpg'); 
+  background-position: center center; 
+  background-attachment: fixed;
+}
+
 #main { 
-  margin: 0;
-  padding: 30px;
+  margin: 20px;
   width: 100%;
   height: 100%;
   text-align:center;
   display:grid; 
   justify-content: center;
   align-items: center;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Helvetica", Helvetica, Arial, sans-serif;
+
+  background-color: rgb(255, 255, 255); 
+  padding: 100px; 
+  max-width: 900px; 
+  text-align: center;
 }
 
 h1 {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 8rem;
+    filter: blur(4px);
 }
 
 h2 {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    filter: blur(1px); 
 }
 
 p {
     font-size: 0.8rem; 
+}
+
+#text {
+  text-align: center;  
+  padding: 10%; 
+  text-align:center;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Checkbox Columns */
@@ -34,5 +61,6 @@ p {
 .column {
   flex: 1; 
   padding: 15px;
-  background-color: #f0f0f0; /* Optional: Added to see the boxes clearly */
+  background-color: #f7c1ff; /* Optional: Added to see the boxes clearly */
+  background-image: url('images/tex1.jpg') 
 }
