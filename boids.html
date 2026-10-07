@@ -30,15 +30,10 @@
                 The flock seems to be following a leader, but each time they turn, a new bird becomes the leader. The flock changes direction
                  like a single unit, yet it is just an assembly of individuals. The flock is a dense cluster, but the birds do not often collide.</i> - Reynolds (link)</p>
     
-            <h2>HISTORY OF BOIDS ALGORITHM</h2>
-            <h3></h3>
-            <p style="text-align:left">
-                boids algorithm was developed in 
-            </p> 
         </div>
 
         <!-- Flocking Examples -->
-         <h2>Flocking in Nature</h2>
+         <h2>FLOCKING IN NATURE</h2>
          <div class="container">
             <div>
                 <p>ants</p>
@@ -57,11 +52,15 @@
 
         <!-- About boids Algorithm -->
          <div>
-            <h2>Flocking in Nature</h2>
+            <h2>HISTORY OF BOIDS ALGORITHM</h2>
             <div class="container">
                 <div>
                     <p style="text-align:left">
-                boids algorithm was developed in  </p>
+                <b>Boids algorithm</b>, developed by Craig Reynold in 1986, is an artificial life simulation that mimics the flocking patterns of birds. 
+                Though simple, the algorithm is a decentralized, self-organized system of autonomous agents. 
+                By tweaking the simple rules for the algorithm, the autonomous agents can emulate different animals and behaviours.
+                "Boid" is derived from bird-oid meaning bird-like, where -oid suffix is latin for like, similar to how humanoid mean human-like. 
+                 </p>
                 </div>
             
             </div>
@@ -72,18 +71,19 @@
             <!-- Intro to Autonomous Agents -->
             <h2>AUTONOMOUS AGENTS</h2>
             <h3>forces from within</h3>
-            <p></p>
-
-        <!-- Steering -->
-            <h2>STEERING</h2>
-            <h3>how boids turn</h3>
-            
+            <p><b>1. an autonomous agent has a limited ability to perceive its environment.</b> <br>
+            </p>
+            <img id="image" src="images/bugview.jpg">
+            <p><b>2. an autonomous agent processes the information from its environment and calculates an action.</b></p>
+            <img id="image" src="images/shark.jpg">
+            <p><b>3. an autonomous agent has no leader. </b></p>
+            <img id="image" src="images/complex.jpg">
         </div>
 
 
-
         <!-- Playground (Checkboxes) -->
-        <h2>BOIDS playground</h2>
+        <h2>BOIDS</h2>
+        <h3>playground</h3>
          <div class="container">
             <div class="column">
                 <label>
@@ -116,10 +116,22 @@
         </div>
 
         <div id="p5-canvas"></div>
+        <p>-</p>
+
+        <!-- Steering -->
+         <div id="text">
+            <h2>SEEKING</h2>
+            <h3>how boids steer</h3>
+            <p> </p>
+            <img style="width:100%;" src="images/seek.webp">
+            <p>the boid applies a steering force equal to its desired velocity minus its current velocity.</p>
+            <h3>fleeting behaviour</h3>
+            <p>for fleeting behaviour, the desired steering velocity is the same just pointing in the oposite direction. this is done by multiplying the velocity by -1</p>
+         </div>
 
         <h2>RESOURCES </h2>
         <p>resources i used to research and create this presentation</p>
-        <a href="https://natureofcode.com/autonomous-agents/">Nature of Code: Autonomous-Agents - By Craig Reynolds</a>
+        <a href="https://natureofcode.com/autonomous-agents/">Nature of Code: Autonomous-Agents - By Daniel Shiffman</a>
         <a href="https://www.red3d.com/cwr/boids/">Boids (Background and Update) - By Craig Reynolds</a>
         <a href="https://thecodingtrain.com/challenges/124-flocking-simulation">Flocking Simulation - By Coding Train</a>
         <a href="https://www.youtube.com/watch?v=V4f_1_r80RY&t=3s">Flight of the Starlings - By National Geographic</a>
@@ -134,7 +146,12 @@
   let flock = [];
   let amount = 500; 
   let bgColor = "lightblue"; 
-  let maxSpeed = 4; 
+  let maxSpeed = 4;
+  let changeSeek = 0; 
+  let changeAlignment = 1.0; 
+  let changeCohesion = 1.0; 
+  let changeSeperation = 1.8; 
+ 
 
   function setup() {
     
@@ -204,27 +221,44 @@ class Boids {
     let cohesion = this.cohere(boids);
     let separation = this.separate(boids);
 
-    // Check which rules are turned on
+    // Seeking behaviour. Only seek when the mouse is over the canvas
+    let seek = createVector();
+    let mouseOnCanvas = mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height;
+    if (mouseOnCanvas) {
+        seek = this.seek(createVector(mouseX, mouseY));
+    }
+
+    // Check which rules are turned on, weigh the forces (adjust multipliers to change behavior)
   if (!document.getElementById("alignment").checked) {
     alignment.mult(0);
+  }
+  else {
+    alignment.mult(changeAlignment);
   }
 
   if (!document.getElementById("cohesion").checked) {
     cohesion.mult(0);
   }
 
+  else {
+    cohesion.mult(changeCohesion);
+  }
+
   if (!document.getElementById("separation").checked) {
     separation.mult(0);
   }
+  else {
+    separation.mult(changeSeperation);
+  }
 
-    // Weight the forces (adjust multipliers to change behavior)
-    alignment.mult(1.0);
-    cohesion.mult(1.0);
-    separation.mult(1.8);
+    
+    seek.mult(changeSeek); // tweak: higher = boids chase the mouse more aggressively
+
 
     this.acceleration.add(alignment);
     this.acceleration.add(cohesion);
     this.acceleration.add(separation);
+    this.acceleration.add(seek);
   }
 
   update() {
@@ -317,6 +351,26 @@ class Boids {
     }
     return steer;
   }
+
+    // Bonus: Steering towards target position 
+    seek(target) {
+    let d = p5.Vector.dist(this.position, target);
+
+    let desired = p5.Vector.sub(target, this.position);
+
+    // Arrival: slow down when close so boids don't overshoot and jitter
+    let slowRadius = 100;
+    if (d < slowRadius) {
+        let speed = map(d, 0, slowRadius, 0, this.maxSpeed);
+        desired.setMag(speed);
+    } else {
+        desired.setMag(this.maxSpeed);
+    }
+
+    let steer = p5.Vector.sub(desired, this.velocity);
+    steer.limit(this.maxForce);
+    return steer;
+    }
 }
 </script>
 
