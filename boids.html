@@ -14,25 +14,48 @@
 <body>
     <div id="main">
         <h1>BOIDS</h1>
-        <h2>presentation by: skyla trousdale</h2>
+        <h3>presentation by: skyla trousdale</h3>
 
+        
         <!-- Intro -->
         <div id="text">
-            <p style="text-align:left">
-                boids algorithm was developed in 
-            </p>
+            
+            <h2>WHAT RULES DO THE BIRDS FOLLOW?</h2>
+            <iframe width="524" height="295" src="https://www.youtube.com/embed/V4f_1_r80RY?loop=1?autoplay=1?mute=1" 
+            title="Flight of the Starlings" 
+            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
             <p><i>We must define the behavior of a single bird so that when a lot of instances of the bird are simulated, they flock convincingly. 
                 The flock seems to be following a leader, but each time they turn, a new bird becomes the leader. The flock changes direction
                  like a single unit, yet it is just an assembly of individuals. The flock is a dense cluster, but the birds do not often collide.</i> - Reynolds (link)</p>
     
-            <iframe width="524" height="295" src="https://www.youtube.com/embed/V4f_1_r80RY?loop=1?autoplay=1?mute=1" 
-            title="Flight of the Starlings: Watch This Eerie but Beautiful Phenomenon | Short Film Showcase" 
-            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <h2>HISTORY OF BOIDS ALGORITHM</h2>
+            <h3></h3>
+            <p style="text-align:left">
+                boids algorithm was developed in 
+            </p>
+            
+        </div>
+        <!-- Flocking Examples -->
+         <h2>Flocking in Nature</h2>
+         <div class="container">
+            <div>
+                <p>ants</p>
+                <img id="image" src="images/ants.jpg">
+            </div>
+
+            <div>
+                <p>fish</p>
+                <img id="image" src="images/fish.jpg">
+            </div>
+           <div>
+                <p>birds</p>
+                <img id="image" src="images/birds.jpg">
+            </div>
         </div>
 
-        <!-- Checkboxes -->
+        <!-- Playground (Checkboxes) -->
         <h2>BOIDS playground</h2>
          <div class="container">
             <div class="column">
@@ -40,7 +63,9 @@
                 <input type="checkbox" id="alignment" checked>
                 Alignment
                 </label>
-                <p>boids roughly match the velocity of their neighbors</p>
+                <img src="images/alignment.gif">
+                <p>steer towards the average heading of local flockmates. 
+                    boids roughly match the velocity of their neighbors</p>
             </div>
 
             <div class="column">
@@ -48,14 +73,18 @@
                 <input type="checkbox" id="cohesion" checked>
                 Cohesion
                 </label>
-                <p>boids move towards the center of mass of their neighbors</p>
+                <img src="images/cohesion.gif">
+                <p>steer to move toward the average position of local flockmates.
+                    boids move towards the center of mass of their neighbors</p>
             </div>
             <div class="column">
                 <label>
                 <input type="checkbox" id="separation" checked>
                 Separation
                 </label>
-                <p>boids move away from other boids if too close</p>
+                <img src="images/seperation.gif">
+                <p>steer to avoid crowding local flockmates.
+                     boids move away from other boids if too close</p>
             </div>
         </div>
 
@@ -75,21 +104,27 @@
 
 <script>
 
-  const flock = [];
+  let flock = [];
+  let amount = 500; 
+  let bgColor = "lightblue"; 
 
   function setup() {
     
     let canvas = createCanvas(600, 400);
     canvas.parent('p5-canvas')
-    // Create an initial group of boids
-    for (let i = 0; i < 500; i++) {
-        flock.push(new Boids(random(width), random(height))); // random location
-    }
+    generateBoids(amount); 
   }
 
+  // Create an initial group of boids
+  function generateBoids(x) {
+    flock = []
+    for (let i = 0; i < x; i++) {
+        flock.push(new Boids(random(width), random(height))); // random location
+    }
+}
 
   function draw() {
-    background("lightblue");
+    background(bgColor);
 
     // Update and show each boid
     for (let boid of flock) {
@@ -108,7 +143,7 @@ class Boids {
     this.velocity.setMag(random(2, 4));
     this.acceleration = createVector();
     this.maxForce = 0.2;
-    this.maxSpeed = 6;
+    this.maxSpeed = s;
     this.r = 2; // size of the boid
   }
 
