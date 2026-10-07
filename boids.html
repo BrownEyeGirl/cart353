@@ -16,8 +16,8 @@
         <h1>BOIDS</h1>
         <h3>presentation by: skyla trousdale</h3>
 
-        
-        <!-- Intro -->
+
+        <!-- Intro of Boids -->
         <div id="text">
             
             <h2>WHAT RULES DO THE BIRDS FOLLOW?</h2>
@@ -34,9 +34,9 @@
             <h3></h3>
             <p style="text-align:left">
                 boids algorithm was developed in 
-            </p>
-            
+            </p> 
         </div>
+
         <!-- Flocking Examples -->
          <h2>Flocking in Nature</h2>
          <div class="container">
@@ -54,6 +54,33 @@
                 <img id="image" src="images/birds.jpg">
             </div>
         </div>
+
+        <!-- About boids Algorithm -->
+         <div>
+            <h2>Flocking in Nature</h2>
+            <div class="container">
+                <div>
+                    <p style="text-align:left">
+                boids algorithm was developed in  </p>
+                </div>
+            
+            </div>
+        </div>
+
+         
+        <div id="text">
+            <!-- Intro to Autonomous Agents -->
+            <h2>AUTONOMOUS AGENTS</h2>
+            <h3>forces from within</h3>
+            <p></p>
+
+        <!-- Steering -->
+            <h2>STEERING</h2>
+            <h3>how boids turn</h3>
+            
+        </div>
+
+
 
         <!-- Playground (Checkboxes) -->
         <h2>BOIDS playground</h2>
@@ -107,6 +134,7 @@
   let flock = [];
   let amount = 500; 
   let bgColor = "lightblue"; 
+  let maxSpeed = 4; 
 
   function setup() {
     
@@ -143,7 +171,7 @@ class Boids {
     this.velocity.setMag(random(2, 4));
     this.acceleration = createVector();
     this.maxForce = 0.2;
-    this.maxSpeed = s;
+    this.maxSpeed = 3;
     this.r = 2; // size of the boid
   }
 
@@ -202,6 +230,7 @@ class Boids {
   update() {
     this.velocity.add(this.acceleration);
     this.velocity.limit(this.maxSpeed);
+    this.maxSpeed = maxSpeed; 
     this.position.add(this.velocity);
     this.acceleration.mult(0); // Reset acceleration each frame
   }

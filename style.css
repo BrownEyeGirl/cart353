@@ -38,6 +38,11 @@ h2 {
     filter: blur(1px); 
 }
 
+h3 {
+    filter: blur(1px);
+    opacity: 0.6;
+}
+
 p {
     font-size: 0.8rem; 
 }
